@@ -2,8 +2,8 @@ import {clsx} from "clsx";
 import {Quote} from "@/lib/models/quote.ts";
 import {Button} from "@/components/ui/button/button.tsx";
 import {useState} from "react";
-import QuoteComponent from "@/components/ui/quote/quote.tsx";
-import EmptyQuote from "@/pages/home/components/empty-quote.tsx";
+import QuoteCard from "@/components/ui/quote/quote.tsx";
+import EmptyQuote from "@/components/ui/quote/empty-quote.tsx";
 import {Link} from "react-router-dom";
 
 export type QuotesProps = {
@@ -11,24 +11,25 @@ export type QuotesProps = {
   loadMore: ({ skip }: {skip: number}) => Promise<void>;
   hasMore: boolean;
   quotes: Quote[];
+  loadingQuotes: boolean
 }
 
-const Quotes = ({ className, hasMore, loadMore, quotes }: QuotesProps) => {
+const Quotes = ({ className, hasMore, loadMore, quotes, loadingQuotes }: QuotesProps) => {
 
-  const [loadingQuotes, setLoadingQuotes] = useState(false)
+  const [loadingMoreQuotes, setLoadingMoreQuotes] = useState(false)
   const loadMoreQuotes = async () => {
-    if(loadingQuotes) return
+    if(loadingMoreQuotes) return
 
-    setLoadingQuotes(true)
+    setLoadingMoreQuotes(true)
     await loadMore({ skip: quotes.length })
-    setLoadingQuotes(false)
+    setLoadingMoreQuotes(false)
   }
 
   return <div className={clsx(["flex flex-col gap-5 w-full", className])}>
-    {quotes.length == 0 && loadingQuotes ? [0,1,2,3,4,5].map(it => <EmptyQuote key={it}/>) : quotes.map(quote => <Link to={`/quote/${quote.id}`} key={quote.id}><QuoteComponent quote={quote} key={quote.id} /></Link>)}
+    {loadingQuotes ? [0,1,2,3,4,5].map(it => <EmptyQuote key={it}/>) : (quotes.length > 0 ? quotes.map(quote => <Link to={`/quote/${quote.id}`} key={quote.id}><QuoteCard quote={quote} key={quote.id} /></Link>) : (<div className={"text-center text-gray-500"}>No hay cotizaciones</div>))}
 
     {hasMore && <Button onClick={() => loadMoreQuotes()} className={"w-full"}>
-      {loadingQuotes ? 'Cargando...' : 'Cargar más'}
+      {loadingMoreQuotes ? 'Cargando...' : 'Cargar más'}
     </Button>}
   </div>
 }

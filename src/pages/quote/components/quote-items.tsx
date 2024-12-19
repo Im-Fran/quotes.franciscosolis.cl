@@ -23,13 +23,13 @@ const QuoteItems = ({ quote, setQuote, editItem } : QuoteItemsProps) => {
       error: 'Error al eliminar el elemento!',
     }).then(() => setQuote({
       ...quote,
-      items: quote.items?.filter(i => i.id !== item.id)
+      Item: quote.Item?.filter(i => i.id !== item.id)
     }))
   }
 
   return (
     <div className="flex flex-col space-y-4">
-      {(quote.items || []).map(item => (
+      {(quote.Item || []).map(item => (
         <div key={item.id} className={"flex items-center justify-between py-2 border-b border-gray-200"}>
           <div className={"flex flex-col items-start justify-start"}>
             <h3 className={"text-sm font-semibold"}>{ item.name }</h3>

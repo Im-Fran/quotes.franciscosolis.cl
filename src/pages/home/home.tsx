@@ -9,6 +9,7 @@ import axios from "@/lib/axios.ts";
 const Home = () => {
 
   const { can } = usePermissions()
+  const [loadingQuotes, setLoadingQuotes] = useState(false)
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [hasMore, setHasMore] = useState(false)
 
@@ -27,7 +28,8 @@ const Home = () => {
   }
 
   useEffect(() => {
-    loadQuotes({ skip: 0 }).then()
+    setLoadingQuotes(true)
+    loadQuotes({ skip: 0 }).then(() => setLoadingQuotes(false))
   }, [])
 
   return <div className={"py-5 flex flex-col gap-5"}>
@@ -39,8 +41,8 @@ const Home = () => {
       },
       "gap-0 md:gap-5",
     ])}>
-      <CreateQuote loadQuotes={() => loadQuotes({ skip: 0 })} className={"col-span-3 max-h-[34rem] mb-5 md:mb-0"}/>
-      <Quotes hasMore={hasMore} loadMore={loadQuotes} quotes={quotes} className={"col-span-7"}/>
+      <CreateQuote loadQuotes={() => loadQuotes({ skip: 0 })} className={"col-span-3 h-[28rem] mb-5 md:mb-0"}/>
+      <Quotes loadingQuotes={loadingQuotes} hasMore={hasMore} loadMore={loadQuotes} quotes={quotes} className={"col-span-7"}/>
     </div>
   </div>
 };

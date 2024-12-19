@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 
 type CreateQuoteForm = {
   email: string;
-  price: number;
   name: string;
   description: string;
 }

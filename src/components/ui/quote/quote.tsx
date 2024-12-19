@@ -7,15 +7,14 @@ import {currencyFormat} from "@/lib/utils.ts";
 export type QuoteProps = {
   className?: string;
   quote: Quote;
-  price?: number | undefined;
 }
 
-const QuoteComponent = ({ className, quote, price }: QuoteProps) => <div className={clsx(["flex flex-col gap-2 bg-neutral-300 dark:bg-gray-800 rounded-xl px-5 py-2.5", className])}>
+const QuoteCard = ({ className, quote }: QuoteProps) => <div className={clsx(["flex flex-col gap-2 bg-neutral-300 dark:bg-gray-800 rounded-xl px-5 py-2.5", className])}>
   <div className={"flex flex-col"}>
     <div className={"flex items-center justify-between w-full"}>
       <h1 className={"w-full text-2xl font-bold"}>{quote.name}</h1>
 
-      {price && <span className={"text-green-600 font-semibold text-lg"}>{currencyFormat.format(price)}</span>}
+      {quote.Item?.length > 0 && <span className={"text-green-600 font-semibold text-lg"}>{currencyFormat.format(quote.Item.reduce((acc, item) => acc + item.amount, 0))}</span>}
     </div>
     <div className={"flex flex-col gap-2.5 my-2.5"}>
       <span className={"flex gap-2.5 text-md text-neutral-500 dark:text-neutral-400 capitalize"}>
@@ -52,4 +51,4 @@ const QuoteComponent = ({ className, quote, price }: QuoteProps) => <div classNa
   <p className={"text-md text-neutral-700 dark:text-neutral-300"}>{quote.description}</p>
 </div>
 
-export default QuoteComponent
+export default QuoteCard

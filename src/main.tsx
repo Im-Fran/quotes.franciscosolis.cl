@@ -2,13 +2,14 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import {RouterProvider} from "react-router-dom";
 import router from "@/router/router";
+import {ClerkProvider} from "@clerk/clerk-react";
 import "@radix-ui/themes/styles.css";
 import './index.css'
-import {ClerkProvider} from "@clerk/clerk-react";
+
+/* dayjs */
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import es from 'dayjs/locale/es'
-
 dayjs.locale(es)
 dayjs.extend(relativeTime)
 

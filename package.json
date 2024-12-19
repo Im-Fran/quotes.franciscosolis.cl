@@ -14,6 +14,7 @@
     "@radix-ui/themes": "^3.1.6",
     "@tailwindcss/vite": "^4.0.0-beta.5",
     "axios": "^1.7.9",
+    "axios-hooks": "^5.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
@@ -22,7 +23,7 @@
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.28.0",
-    "react-shimmer-effects": "^1.0.3",
+    "shimmer-effects-react": "^1.0.4",
     "tailwindcss": "^4.0.0-beta.5",
     "usehooks-ts": "^3.1.0"
   },

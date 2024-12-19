@@ -10,8 +10,8 @@ export type Quote = {
   createdAt: string;
   updatedAt: string;
 
-  comments: Comment[];
-  items: Item[];
+  Comment: Comment[];
+  Item: Item[];
 
   creator: {
     name: string;
