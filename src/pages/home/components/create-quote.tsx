@@ -7,6 +7,7 @@ import {TextArea} from "@/components/ui/forms/text-area.tsx";
 import {Button} from "@/components/ui/button/button.tsx";
 import axios from "@/lib/axios.ts";
 import toast from "react-hot-toast";
+import {Quote} from "@/lib/models/quote.ts";
 
 type CreateQuoteForm = {
   email: string;
@@ -16,10 +17,11 @@ type CreateQuoteForm = {
 
 export type CreateQuoteProps = {
   className?: string;
-  loadQuotes: () => void;
+  quotes: Quote[];
+  setQuotes: (quotes: Quote[]) => void;
 }
 
-const CreateQuote = ({ className, loadQuotes }: CreateQuoteProps) => {
+const CreateQuote = ({ className, quotes, setQuotes }: CreateQuoteProps) => {
 
   const {can} = usePermissions()
   const [form, setForm] = useState<CreateQuoteForm>({
@@ -34,11 +36,13 @@ const CreateQuote = ({ className, loadQuotes }: CreateQuoteProps) => {
 
     await toast.promise(axios.post('/quotes', form), {
       loading: 'Creando Cotización...',
-      success: 'Cotización Creada!',
+      success: (res) => {
+        const quote = res.data.quote
+        setQuotes([quote, ...quotes])
+        return 'Cotización Creada!'
+      },
       error: 'Error al Crear Cotización'
     })
-
-    loadQuotes()
   }
 
   return can('quotes.create') && <form onSubmit={onSubmit} className={clsx(["flex flex-col items-start justify-start rounded-xl bg-neutral-300 dark:bg-gray-800 p-5 gap-5", className])}>

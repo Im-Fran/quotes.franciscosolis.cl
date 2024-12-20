@@ -41,7 +41,7 @@ const Home = () => {
       },
       "gap-0 md:gap-5",
     ])}>
-      <CreateQuote loadQuotes={() => loadQuotes({ skip: 0 })} className={"col-span-3 h-[28rem] mb-5 md:mb-0"}/>
+      <CreateQuote quotes={quotes} setQuotes={setQuotes} className={"col-span-3 h-[28rem] mb-5 md:mb-0"}/>
       <Quotes loadingQuotes={loadingQuotes} hasMore={hasMore} loadMore={loadQuotes} quotes={quotes} className={"col-span-7"}/>
     </div>
   </div>
