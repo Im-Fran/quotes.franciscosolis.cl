@@ -15,35 +15,31 @@ export type QuoteItemsProps = {
 
 const QuoteItems = ({ quote, setQuote, editItem } : QuoteItemsProps) => {
   const { can } = usePermissions()
-  const destroyItem = (item: Item) => {
-    if (quote == null) return
-    toast.promise(axios.delete(`/quotes/${quote.id}/items/${item.id}`), {
-      loading: 'Eliminando item...',
-      success: 'Item eliminado!',
-      error: 'Error al eliminar el elemento!',
-    }).then(() => setQuote({
-      ...quote,
-      Item: quote.Item?.filter(i => i.id !== item.id)
-    }))
-  }
+  const destroyItem = (item: Item) => toast.promise(axios.delete(`/quotes/${quote.id}/items/${item.id}`), {
+    loading: 'Eliminando item...',
+    success: () => {
+      setQuote({
+        ...quote,
+        Item: quote.Item?.filter(i => i.id !== item.id)
+      })
+      return 'Item eliminado!'
+    },
+    error: (err) => err.response?.data?.error || 'Error al eliminar el elemento!',
+  }).then()
 
-  return (
-    <div className="flex flex-col space-y-4">
-      {(quote.Item || []).map(item => (
-        <div key={item.id} className={"flex items-center justify-between py-2 border-b border-gray-200"}>
-          <div className={"flex flex-col items-start justify-start"}>
-            <h3 className={"text-sm font-semibold"}>{ item.name }</h3>
-            <p className={"text-sm text-gray-500"}>{ item.description }</p>
-          </div>
-          <div className={"flex items-center justify-center gap-2"}>
-            <p className={"text-sm font-semibold"}>{ currencyFormat.format(item.amount) }</p>
-            {can('items.update') && <Button onClick={() => editItem(item)} size={"sm"}><Edit className={"w-6 h-6"}/></Button>}
-            {can('items.destroy') && <Button onClick={() => destroyItem(item)} variant={"danger"} size={"sm"}><Trash className={"w-6 h-6"}/></Button>}
-          </div>
+  return <div className="flex flex-col space-y-4">
+    {(quote.Item || []).map(item => <div key={item.id} className={"flex items-center justify-between py-2 border-b border-gray-200"}>
+        <div className={"flex flex-col items-start justify-start"}>
+          <h3 className={"text-sm font-semibold"}>{ item.name }</h3>
+          <p className={"text-sm text-gray-500"}>{ item.description }</p>
         </div>
-      ))}
-    </div>
-  )
+        <div className={"flex items-center justify-center gap-2"}>
+          <p className={"text-sm font-semibold"}>{ currencyFormat.format(item.amount) }</p>
+          {can('items.update') && <Button onClick={() => editItem(item)} size={"sm"}><Edit className={"w-6 h-6"}/></Button>}
+          {can('items.destroy') && <Button onClick={() => destroyItem(item)} variant={"danger"} size={"sm"}><Trash className={"w-6 h-6"}/></Button>}
+        </div>
+      </div>)}
+  </div>
 }
 
 export default QuoteItems
